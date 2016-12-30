@@ -22,6 +22,8 @@
 # License along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
+from __future__ import print_function
+
 """This module implements Spack's configuration file handling.
 
 This implements Spack's configuration system, which handles merging
@@ -206,6 +208,19 @@ class ConfigScope(object):
         return '<ConfigScope: %s: %s>' % (self.name, self.path)
 
 
+class ImmutableConfigScope(ConfigScope):
+    """A configuration scope that cannot be written to.
+
+    This is used for ConfigScopes passed on the command line.
+    """
+
+    def write_section(self, section):
+        raise ConfigError("Cannot write to immutable scope %s" % self)
+
+    def __repr__(self):
+        return '<ImmutableConfigScope: %s: %s>' % (self.name, self.path)
+
+
 class InternalConfigScope(ConfigScope):
     """An internal configuration scope that is not persisted to a file.
 
@@ -274,9 +289,8 @@ class Configuration(object):
 
     @property
     def file_scopes(self):
-        """List of scopes with an associated file (non-internal scopes)."""
-        return [s for s in self.scopes.values()
-                if not isinstance(s, InternalConfigScope)]
+        """List of writable scopes with an associated file."""
+        return [s for s in self.scopes.values() if type(s) == ConfigScope]
 
     def highest_precedence_scope(self):
         """Non-internal scope with highest precedence."""
@@ -468,6 +482,11 @@ def override(path, value):
     assert scope is overrides
 
 
+#: configuration scopes added on the command line
+#: set by ``spack.main.main()``.
+command_line_scopes = []
+
+
 def _config():
     """Singleton Configuration instance.
 
@@ -488,13 +507,27 @@ def _config():
     # Each scope can have per-platfom overrides in subdirectories
     platform = spack.architecture.platform().name
 
+    def add_platform_scope(scope_type, name, path):
+        plat_name = '%s/%s' % (name, platform)
+        plat_path = os.path.join(path, platform)
+        cfg.push_scope(scope_type(plat_name, plat_path))
+
     # add each scope and its platform-specific directory
     for name, path in configuration_paths:
         cfg.push_scope(ConfigScope(name, path))
+        add_platform_scope(ConfigScope, name, path)
 
-        plat_name = '%s/%s' % (name, platform)
-        plat_path = os.path.join(path, platform)
-        cfg.push_scope(ConfigScope(plat_name, plat_path))
+    # add any additional scopes from the --config argument
+    # command line scopes are named after their paths
+    for i, path in enumerate(command_line_scopes):
+        if not os.path.isdir(path):
+            raise ConfigError("config scope is not a directory: '%s'" % path)
+        elif not os.access(path, os.R_OK):
+            raise ConfigError("config scope is not readable: '%s'" % path)
+
+        name = 'cmd_scope_%d' % i
+        cfg.push_scope(ImmutableConfigScope(name, path))
+        add_platform_scope(ImmutableConfigScope, name, path)
 
     # we make a special scope for spack commands so that they can
     # override configuration options.
