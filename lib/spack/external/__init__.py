@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2013-2017, Lawrence Livermore National Security, LLC.
+# Copyright (c) 2013-2018, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory.
 #
 # This file is part of Spack.
@@ -86,9 +86,10 @@ markupsafe
 orderddict
 ----------
 
-* Homepage: http://code.activestate.com/recipes/576693-ordered-dictionary-for-py24/
-* Usage: We include our own version to be Python 2.6 compatible.
-* Version: Unversioned
+* Homepage: https://pypi.org/project/ordereddict/
+* Usage: A drop-in substitute for Py2.7's new collections.OrderedDict
+  that works in Python 2.4-2.6.
+* Version: 1.1
 
 py
 --

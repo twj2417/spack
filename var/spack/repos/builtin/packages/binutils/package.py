@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2013-2017, Lawrence Livermore National Security, LLC.
+# Copyright (c) 2013-2018, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory.
 #
 # This file is part of Spack.
@@ -78,5 +78,11 @@ class Binutils(AutotoolsPackage):
 
         if '+libiberty' in spec:
             configure_args.append('--enable-install-libiberty')
+
+        # To avoid namespace collisions with Darwin/BSD system tools,
+        # prefix executables with "g", e.g., gar, gnm; see Homebrew
+        # https://github.com/Homebrew/homebrew-core/blob/master/Formula/binutils.rb
+        if spec.satisfies('platform=darwin'):
+            configure_args.append('--program-prefix=g')
 
         return configure_args

@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2013-2017, Lawrence Livermore National Security, LLC.
+# Copyright (c) 2013-2018, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory.
 #
 # This file is part of Spack.
@@ -57,7 +57,7 @@ class Emacs(AutotoolsPackage):
     depends_on('giflib', when='+X')
     depends_on('libx11', when='+X')
     depends_on('libxaw', when='+X toolkit=athena')
-    depends_on('gtkplus+X', when='+X toolkit=gtk')
+    depends_on('gtkplus', when='+X toolkit=gtk')
     depends_on('gnutls', when='+tls')
     depends_on('libxpm ^gettext+libunistring', when='+tls')
     depends_on('ncurses+termlib', when='+tls')
