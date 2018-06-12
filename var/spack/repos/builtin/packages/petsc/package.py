@@ -39,7 +39,7 @@ class Petsc(Package):
 
     maintainers = ['balay', 'barrysmith', 'jedbrown']
 
-    version('develop', git='https://bitbucket.org/petsc/petsc.git', branch='master')
+    version('develop', git='https://bitbucket.org/petsc/petsc.git', branch='balay/update-superlu_dist_v5.4.0')
     version('xsdk-0.2.0', git='https://bitbucket.org/petsc/petsc.git', tag='xsdk-0.2.0')
 
     version('3.9.2', '8bedc0cd8c8603d54bfd99a6e8f77b3d')
