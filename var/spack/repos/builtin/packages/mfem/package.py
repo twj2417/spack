@@ -192,6 +192,7 @@ class Mfem(Package):
     depends_on('conduit+mpi', when='+conduit+mpi')
 
     patch('mfem_ppc_build.patch', when='@3.2:3.3.0 arch=ppc64le')
+    patch('fix_hypre_link_prder.patch', when='@develop')
 
     phases = ['configure', 'build', 'install']
 
