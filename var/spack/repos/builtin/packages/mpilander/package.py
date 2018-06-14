@@ -25,21 +25,40 @@
 from spack import *
 
 
-class JsonC(AutotoolsPackage):
-    """A JSON implementation in C."""
-    homepage = "https://github.com/json-c/json-c/wiki"
-    url      = "https://s3.amazonaws.com/json-c_releases/releases/json-c-0.12.1.tar.gz"
+class Mpilander(CMakePackage):
+    """There can only be one (MPI process)!"""
 
-    version('0.13.1', '04969ad59cc37bddd83741a08b98f350')
-    version('0.12.1', '55f7853f7d8cf664554ce3fa71bf1c7d')
-    version('0.11',   'aa02367d2f7a830bf1e3376f77881e98')
+    homepage = "https://github.com/MPILander/MPILander"
+    url      = "https://github.com/MPILander/MPILander/archive/0.1.0.tar.gz"
+    maintainers = ['ax3l']
 
-    depends_on('autoconf', type='build')
+    version('develop', branch='master',
+            git='https://github.com/MPILander/MPILander.git')
 
-    parallel = False
+    # variant('cuda', default=False, description='Enable CUDA support')
+    # variant(
+    #     'schedulers',
+    #     description='List of supported schedulers',
+    #     values=('alps', 'lsf', 'tm', 'slurm', 'sge', 'loadleveler'),
+    #     multi=True
+    # )
 
-    @when('@0.12.1 %gcc@7:')
-    def patch(self):
-        filter_file('-Wextra',
-                    '-Wextra -Wno-error=implicit-fallthrough',
-                    'Makefile.in')
+    depends_on('cmake@3.9.2:', type='build')
+
+    provides('mpi@:3.1')
+
+    # compiler support
+    conflicts('%gcc@:4.7')
+    conflicts('%clang@:3.8')
+    conflicts('%intel@:16')
+
+    def cmake_args(self):
+        args = [
+            # tests and examples
+            '-DBUILD_TESTING:BOOL={0}'.format(
+                'ON' if self.run_tests else 'OFF'),
+            '-DBUILD_EXAMPLES:BOOL={0}'.format(
+                'ON' if self.run_tests else 'OFF'),
+        ]
+
+        return args
