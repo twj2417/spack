@@ -82,11 +82,9 @@ class Geant4(CMakePackage):
 
         options = [
             '-DGEANT4_USE_GDML=ON',
-            '-DGEANT4_USE_SYSTEM_CLHEP=OFF',
             '-DGEANT4_USE_G3TOG4=OFF',
             '-DGEANT4_INSTALL_DATA=ON',
             '-DGEANT4_BUILD_TLS_MODEL=global-dynamic',
-            '-DGEANT4_BUILD_MULTITHREADED=ON',
             '-DGEANT4_USE_SYSTEM_EXPAT=OFF',
             '-DGEANT4_USE_SYSTEM_ZLIB=ON',
             '-DXERCESC_ROOT_DIR:STRING=%s' %
@@ -100,7 +98,10 @@ class Geant4(CMakePackage):
                 options.append('-DGEANT4_USE_XM=ON')
             if "+x11" in spec:
                 options.append('-DGEANT4_USE_RAYTRACER_X11=ON')
-
+        if '-clhep' in spec:
+            options.append('-DGEANT4_USE_SYSTEM_CLHEP=ON')
+	if '+multithreaded' in spec:
+            options.append('-DGEANT4_BUILD_MULTITHREADED=ON')
         if '+cxx11' in spec:
             options.append('-DGEANT4_BUILD_CXXSTD=c++11')
         if '+cxx14' or '+cxx1y' in spec:
