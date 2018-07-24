@@ -50,6 +50,7 @@ class Geant4(CMakePackage):
     variant('opengl', default=False, description='Optional OpenGL support')
     variant('x11', default=False, description='Optional X11 support')
     variant('motif', default=False, description='Optional motif support')
+    variant('multithreaded', default=False, description='Optional multi-thread support')
 
     depends_on('cmake@3.5:', type='build')
 
