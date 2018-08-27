@@ -101,7 +101,7 @@ class Geant4(CMakePackage):
                 options.append('-DGEANT4_USE_RAYTRACER_X11=ON')
         if '-clhep' in spec:
             options.append('-DGEANT4_USE_SYSTEM_CLHEP=ON')
-	if '+multithreaded' in spec:
+	    if '+multithreaded' in spec:
             options.append('-DGEANT4_BUILD_MULTITHREADED=ON')
         if '+cxx11' in spec:
             options.append('-DGEANT4_BUILD_CXXSTD=c++11')
