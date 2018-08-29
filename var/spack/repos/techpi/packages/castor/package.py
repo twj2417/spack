@@ -38,7 +38,7 @@
 # please first remove this boilerplate and all FIXME comments.
 #
 from spack import *
-
+import os
 
 class Castor(CMakePackage):
     """FIXME: Put a proper description of your package here."""
@@ -52,8 +52,16 @@ class Castor(CMakePackage):
     depends_on('root')
 
     def cmake_args(self):
+        current_home_dir = os.environ['HOME']
+        castor_config_dir = current_home_dir + '/castor/config'
+        isExists = os.path.exists(castor_config_dir)
+
+        if isExists:
+            os.removedirs(castor_config_dir)
+            os.makedirs(castor_config_dir)
+            os.makedirs(castor_config_dir+'/scanner')
         args = ['-DCASToR_USE_CMAKE=ON',
-                '-DCASTOR_CONFIG=/home/chengaoyu/tools/spack/var/spack/stage/castor-2.0.1/config',
+                f'-DCASTOR_CONFIG={castor_config_dir}',
                 '-DCASToR_64bits=ON',
                 '-DCASToR_ROOT=ON',
                 '-DCASToR_BUILD_SAMPLE_UTILITIES=ON',
