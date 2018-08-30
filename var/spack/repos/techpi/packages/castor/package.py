@@ -51,22 +51,23 @@ class Castor(CMakePackage):
 
     # FIXME: Add dependencies if required.
     depends_on('root')
-
+    # depends_on('openmpi')
+    # depends_on('mpich')
     def cmake_args(self):
 
         current_home_dir = os.environ['HOME']
         castor_config_dir = current_home_dir + '/castor/config'
         # print(spack.version.ver(version))
         isExists = os.path.exists(castor_config_dir)
-        if isExists:
-            shutil.rmtree(castor_config_dir)
+        if not isExists:
+            # shutil.rmtree(castor_config_dir)
             os.makedirs(castor_config_dir)
             os.makedirs(castor_config_dir+'/scanner')
         args = ['-DCASToR_USE_CMAKE=ON',
                 f'-DCASTOR_CONFIG={castor_config_dir}',
-                '-DCASToR_MPI=ON',
-                '-DCASToR_OMP=ON',
-                '-DCASToR_SIMD=ON',
+                # '-DCASToR_MPI=ON',
+                # '-DCASToR_OMP=ON',
+                # '-DCASToR_SIMD=ON',
                 '-DCASToR_64bits=ON',
                 '-DCASToR_ROOT=ON',
                 '-DCASToR_BUILD_SAMPLE_UTILITIES=ON',
