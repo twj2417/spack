@@ -37,6 +37,7 @@
 # If you submit this package back to Spack as a pull request,
 # please first remove this boilerplate and all FIXME comments.
 #
+
 from spack import *
 import os
 import shutil
@@ -45,8 +46,9 @@ class Castor(CMakePackage):
     """FIXME: Put a proper description of your package here."""
 
     homepage = "http://www.castor-project.org/"
-    url = "https://github.com/chengaoyu/CASTOR/archive/2.0.1.tar.gz"
-
+    url      = "https://github.com/chengaoyu/CASTOR/archive/2.0.2.tar.gz"
+    
+    version('2.0.2', '0ca7576cce26d2d4815aa322dcd9379b')
     version('2.0.1', '2fc24c8bad59f9ded3704339c0446ea9')
 
     # FIXME: Add dependencies if required.
