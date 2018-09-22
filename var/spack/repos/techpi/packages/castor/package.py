@@ -37,23 +37,39 @@
 # If you submit this package back to Spack as a pull request,
 # please first remove this boilerplate and all FIXME comments.
 #
+
 from spack import *
-
-
+import os
+import shutil
+import spack
 class Castor(CMakePackage):
     """FIXME: Put a proper description of your package here."""
 
     homepage = "http://www.castor-project.org/"
-    url = "https://github.com/chengaoyu/CASTOR/archive/2.0.1.tar.gz"
-
+    url      = "https://github.com/chengaoyu/CASTOR/archive/2.0.2.tar.gz"
+    
+    version('2.0.2', '0ca7576cce26d2d4815aa322dcd9379b')
     version('2.0.1', '2fc24c8bad59f9ded3704339c0446ea9')
 
     # FIXME: Add dependencies if required.
     depends_on('root')
-
+    # depends_on('openmpi')
+    # depends_on('mpich')
     def cmake_args(self):
+
+        current_home_dir = os.environ['HOME']
+        castor_config_dir = current_home_dir + '/castor/config'
+        # print(spack.version.ver(version))
+        isExists = os.path.exists(castor_config_dir)
+        if not isExists:
+            # shutil.rmtree(castor_config_dir)
+            os.makedirs(castor_config_dir)
+            os.makedirs(castor_config_dir+'/scanner')
         args = ['-DCASToR_USE_CMAKE=ON',
-                '-DCASTOR_CONFIG=/home/chengaoyu/tools/spack/var/spack/stage/castor-2.0.1/config',
+                f'-DCASTOR_CONFIG={castor_config_dir}',
+                # '-DCASToR_MPI=ON',
+                # '-DCASToR_OMP=ON',
+                # '-DCASToR_SIMD=ON',
                 '-DCASToR_64bits=ON',
                 '-DCASToR_ROOT=ON',
                 '-DCASToR_BUILD_SAMPLE_UTILITIES=ON',

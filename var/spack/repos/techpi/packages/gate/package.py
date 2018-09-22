@@ -54,7 +54,7 @@ class Gate(CMakePackage):
 
     depends_on('techpi.geant4')
     depends_on('root')
-    depends_on('clhep')
+    # depends_on('clhep')
 
     def cmake_args(self):
         args = ['-DGATE_USE_OPTICAL=ON',
