@@ -54,6 +54,7 @@ class Gate(CMakePackage):
 
     depends_on('techpi.geant4')
     depends_on('root')
+    depends_on('qt')
     # depends_on('clhep')
 
     def cmake_args(self):
