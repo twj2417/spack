@@ -48,6 +48,7 @@ class Geant4(CMakePackage):
     variant('cxx11', default=True, description='Enable CXX11 support')
     variant('cxx14', default=False, description='Enable CXX14 support')
     variant('opengl', default=False, description='Optional OpenGL support')
+    # variant('expat', default=False, description='Optional multi-thread support')
     variant('x11', default=False, description='Optional X11 support')
     variant('motif', default=False, description='Optional motif support')
     variant('multithreaded', default=False, description='Optional multi-thread support')
@@ -86,7 +87,7 @@ class Geant4(CMakePackage):
             '-DGEANT4_USE_G3TOG4=OFF',
             '-DGEANT4_INSTALL_DATA=ON',
             '-DGEANT4_BUILD_TLS_MODEL=global-dynamic',
-            '-DGEANT4_USE_SYSTEM_EXPAT=OFF',
+            '-DGEANT4_USE_SYSTEM_EXPAT=ON',
             '-DGEANT4_USE_SYSTEM_ZLIB=ON',
             '-DXERCESC_ROOT_DIR:STRING=%s' %
             spec['xerces-c'].prefix, ]
@@ -118,7 +119,8 @@ class Geant4(CMakePackage):
             options.append('-DGEANT4_USE_USOLIDS=ON')
             options.append('-DUSolids_DIR=%s' % spec[
                 'vecgeom'].prefix.lib.CMake.USolids)
-
+        # if '+expat' in spec:
+        #     options.append('-DGEANT4_USE_SYSTEM_EXPAT=ON')
         return options
 
     def url_for_version(self, version):

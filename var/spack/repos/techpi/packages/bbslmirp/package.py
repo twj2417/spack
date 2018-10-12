@@ -45,9 +45,10 @@ class Bbslmirp(CMakePackage):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "http://www.example.com"
-    url      = "https://github.com/chengaoyu/BBSLMIRP/archive/v1_0.tar.gz"
+    url      = "https://github.com/tech-pi/BBSLMIRP/archive/v1.1.tar.gz"
 
-    version('1_0', '768d94959beeee678bd61389f7c7a7d7')
+    version('1.1', '4e52c457cd0ffc238f33e37a027c7bb7')
+    version('1.0', 'c185e11399e647c93bac3911c707918e')
 
     # FIXME: Add dependencies if required.
     depends_on('boost')
